@@ -52,8 +52,8 @@ the_propagation = sd.the_streams[myStream].propagation
 the_start_positions = sd.the_streams[myStream].the_start_positions
 
 
-main_location = os.path.expanduser('~')+'/Documents/Chris Files/data/X451/'
-name_folder = 'IsodoubletStrangeFermionic2026/'
+main_location = os.path.expanduser('~')+'${YOUR_PATH_HERE}/data/X451/'
+name_folder = 'IsodoubletStrangeFermionic/'
 correlator_data = h5py.File(f'{main_location}{the_file_name}.hdf5','w') 
 print(f"Data saved to: \n{main_location}{the_file_name}.hdf5") 
 
