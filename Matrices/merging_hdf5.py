@@ -4,7 +4,7 @@ import os
 import streams_dic as sd
 
 stream_list = ['t00_fwd', 't01_fwd']
-main_location = os.path.expanduser('~')+'/Documents/Chris Files/data/X451/'
+main_location = os.path.expanduser('~')+'${YOUR_PATH}/data/X451/'
 ### Creating a dictionary with the correlators for average
 the_corr_dict = {}
 
