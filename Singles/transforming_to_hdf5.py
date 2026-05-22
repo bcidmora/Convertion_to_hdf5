@@ -3,6 +3,7 @@ import h5py
 import streams_dic as sd
 import hadron_data as hd
 import os
+import matplotlib.pyplot as plt
 
 def WRAP_AROUND(the_temp_nt, the_positions, a_counter, the_configs_list, the_fwd_bwd):
     if the_fwd_bwd=='fwd':
@@ -15,7 +16,7 @@ def WRAP_AROUND(the_temp_nt, the_positions, a_counter, the_configs_list, the_fwd
 main_location = os.path.expanduser('~')+'${YOUR_PATH_HERE}/data/X451/'
 name_folder = 'SingleHadrons'
 
-myStream = 't01_fwd'
+myStream = 't01_bwd' # 't00_bwd' # 't00_fwd' # 't01_fwd'
 
 the_configs = sd.the_streams[myStream].configs
 the_nt_min = sd.the_streams[myStream].nt_min
@@ -52,8 +53,10 @@ for hadron in list_of_SH:
         counter=0
         for ll in range(len(the_file_1)):
             the_factor_temp = WRAP_AROUND(nt_temp, the_start_positions, counter, the_configs, the_propagation)
-            the_real_part = ((the_factor_temp * float(the_file_1[ll][1])) + (the_factor_temp * float(the_file_2[ll][1])))/float(2.)
-            the_imag_part = ((the_factor_temp * float(the_file_1[ll][2]))+ (the_factor_temp * float(the_file_2[ll][2])))/float(2.)
+            if the_propagation=='bwd': the_bwd_factor = float(-1.)
+            else: the_bwd_factor = float(1.)
+            the_real_part = ((the_bwd_factor * the_factor_temp * float(the_file_1[ll][1])) + (the_bwd_factor * the_factor_temp * float(the_file_2[ll][1])))/float(2.)
+            the_imag_part = ((the_bwd_factor * the_factor_temp * float(the_file_1[ll][2]))+ (the_bwd_factor * the_factor_temp * float(the_file_2[ll][2])))/float(2.)
             the_value = np.complex128(the_real_part + the_imag_part*1j)
             corr_nt.append(the_value)
             if nt_temp<the_nt_max:
