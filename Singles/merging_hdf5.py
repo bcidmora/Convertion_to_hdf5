@@ -48,7 +48,7 @@ for stream in stream_list:
                 ### Adding the correlator now
                 the_corr_dict[the_irrep]['data'][cfg].append(corr)
 
-the_name_new_file = f'{main_location}cls21_X451_r001_singles_fwd.hdf5'
+the_name_new_file = f'{main_location}cls21_X451_r001_singles.hdf5'
 the_new_corr_file = h5py.File(the_name_new_file, 'w')
 
 ### Now we merge the correlators and average over the source times if there are repeated configs
@@ -67,6 +67,3 @@ for the_irrep in the_corr_dict:
     the_dataset.attrs.create('op_list', the_merged_corr[the_irrep]['op_list'])
     the_dataset.attrs.create('Other_Info', f'min time slice = {the_nt_min} \n max time slice = {the_nt_max}')
     the_dataset.attrs.create('configs', data = the_merged_corr[the_irrep]['configs'])
-
-# print(list(the_merged_corr['PSQ0_A1um_P']['configs']-1))
-# the_merged_corr['PSQ0_G1g'].shape
