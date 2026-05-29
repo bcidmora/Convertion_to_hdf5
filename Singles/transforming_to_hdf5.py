@@ -9,7 +9,10 @@ def WRAP_AROUND(the_temp_nt, the_positions, a_counter, the_configs_list, the_fwd
     if the_fwd_bwd=='fwd':
         the_factor = (-1. if the_temp_nt>=(128 - the_positions[(the_configs_list[a_counter])-1]) else 1.)
     elif the_fwd_bwd=='bwd':
-        the_factor = (-1. if (the_positions[(the_configs_list[a_counter])-1] - the_temp_nt)<=0 else 1.)
+        if the_temp_nt<=the_positions[(the_configs_list[a_counter])-1]:
+            the_factor = -1.
+        else:
+            the_factor = 1.
     return the_factor
     
 
@@ -42,7 +45,7 @@ for hadron in list_of_SH:
             if nt_temp<the_nt_max:
                 nt_temp+=1
             else:
-                correlator.append(np.asarray(corr_nt[2:]))
+                correlator.append(np.asarray(corr_nt[the_nt_min:]))
                 nt_temp=0
                 corr_nt = []
         correlator = np.asarray(correlator)
@@ -53,16 +56,14 @@ for hadron in list_of_SH:
         counter=0
         for ll in range(len(the_file_1)):
             the_factor_temp = WRAP_AROUND(nt_temp, the_start_positions, counter, the_configs, the_propagation)
-            if the_propagation=='bwd': the_bwd_factor = float(-1.)
-            else: the_bwd_factor = float(1.)
-            the_real_part = ((the_bwd_factor * the_factor_temp * float(the_file_1[ll][1])) + (the_bwd_factor * the_factor_temp * float(the_file_2[ll][1])))/float(2.)
-            the_imag_part = ((the_bwd_factor * the_factor_temp * float(the_file_1[ll][2]))+ (the_bwd_factor * the_factor_temp * float(the_file_2[ll][2])))/float(2.)
+            the_real_part = ((the_factor_temp * float(the_file_1[ll][1])) + (the_factor_temp * float(the_file_2[ll][1])))/float(2.)
+            the_imag_part = (( the_factor_temp * float(the_file_1[ll][2]))+ (the_factor_temp * float(the_file_2[ll][2])))/float(2.)
             the_value = np.complex128(the_real_part + the_imag_part*1j)
             corr_nt.append(the_value)
             if nt_temp<the_nt_max:
                 nt_temp+=1
             else:
-                correlator.append(np.asarray(corr_nt[2:]))
+                correlator.append(np.asarray(corr_nt[the_nt_min:]))
                 counter+=1
                 nt_temp=0;
                 corr_nt = []
