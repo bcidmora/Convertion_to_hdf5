@@ -33,12 +33,15 @@ def SQUARED_MOM(the_mom_str):
             elif the_mod_mom[0][i]=='d': the_new_mom+=4
             else: the_new_mom+=int(the_mod_mom[0][i])
         return [str(the_new_mom),the_mod_mom[1]]
-    
+
 def WRAP_AROUND(the_temp_nt, the_positions, a_counter, the_configs_list, the_fwd_bwd):
     if the_fwd_bwd=='fwd':
         the_factor = (-1. if the_temp_nt>=(128 - the_positions[(the_configs_list[a_counter])-1]) else 1.)
     elif the_fwd_bwd=='bwd':
-        the_factor = (-1. if (the_positions[(the_configs_list[a_counter])-1] - the_temp_nt)<=0 else 1.)
+        if the_temp_nt<=the_positions[(the_configs_list[a_counter])-1]:
+            the_factor = -1.
+        else:
+            the_factor = 1.
     return the_factor
 
 myStream = 't00_fwd'
@@ -101,14 +104,12 @@ for hadron in list_of_xi:
                         if nt_temp<the_nt_max:
                             nt_temp+=1
                         else:
-                            correlator.append(corr_nt[2:])
+                            correlator.append(corr_nt[the_nt_min:])
                             nt_temp=0
                             counter+=1
                             corr_nt = []
                     corr_all[jj,kk,mm,zz]=np.asarray(correlator)
-    print(corr_all.shape)
     correlator_avg = RESHAPING(np.mean(corr_all, axis=(2,3)))
-    print(correlator_avg.shape)
     corr_data = correlator_data.create_group(f"PSQ{da_sqr_mom}_{da_irrep}")
     corr_data.create_dataset('data', data = np.asarray(correlator_avg))
     corr_data.attrs.create('op_list', np.array(hadron.operator, dtype=object))
