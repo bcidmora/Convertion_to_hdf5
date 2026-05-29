@@ -5,6 +5,7 @@ import streams_dic as sd
 
 stream_list = ['t00_fwd', 't01_fwd']
 main_location = os.path.expanduser('~')+'${YOUR_PATH}/data/X451/'
+
 ### Creating a dictionary with the correlators for average
 the_corr_dict = {}
 
@@ -16,6 +17,10 @@ for stream in stream_list:
     
     ### getting the name of the file
     the_file_name = sd.the_streams[stream].file_name
+    
+    ### The time range
+    the_nt_min = sd.the_streams[stream].nt_min
+    the_nt_max = sd.the_streams[stream].nt_max
     
     ##3 opening the file
     with h5py.File(f'{main_location}{the_file_name}.hdf5', 'r') as f:
@@ -62,5 +67,3 @@ for the_irrep in the_corr_dict:
     the_dataset.attrs.create('op_list', the_merged_corr[the_irrep]['op_list'])
     the_dataset.attrs.create('Other_Info', f'min time slice = {the_nt_min} \n max time slice = {the_nt_max}')
     the_dataset.attrs.create('configs', data = the_merged_corr[the_irrep]['configs'])
-
-# the_merged_corr['PSQ0_G1g'].shape
