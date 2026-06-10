@@ -44,7 +44,7 @@ def WRAP_AROUND(the_temp_nt, the_positions, a_counter, the_configs_list, the_fwd
             the_factor = 1.
     return the_factor
 
-myStream = 't00_fwd'
+myStream = 't00_bwd'
 
 the_configs = sd.the_streams[myStream].configs
 the_nt_min = sd.the_streams[myStream].nt_min
@@ -55,7 +55,7 @@ the_propagation = sd.the_streams[myStream].propagation
 the_start_positions = sd.the_streams[myStream].the_start_positions
 
 
-main_location = os.path.expanduser('~')+'${YOUR_PATH_HERE}/data/X451/'
+main_location = os.path.expanduser('~')+'${YOUR_PATH_DIR}/data/X451/'
 name_folder = 'IsodoubletStrangeFermionic/'
 correlator_data = h5py.File(f'{main_location}{the_file_name}.hdf5','w') 
 print(f"Data saved to: \n{main_location}{the_file_name}.hdf5") 
