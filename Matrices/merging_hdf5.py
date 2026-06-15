@@ -42,7 +42,7 @@ for stream in stream_list:
             for cfg, corr in zip(the_configs, the_data):
                 
                 ### Checking if config exists here
-                if cfg not in the_corr_dict[the_irrep]:
+                if cfg not in the_corr_dict[the_irrep]['data']:
                     the_corr_dict[the_irrep]['data'][cfg] = []
                 
                 ### Adding the correlator now
