@@ -87,7 +87,9 @@ for hadron in list_of_xi:
     print(f"Irrep: {da_irrep}")
     print(f"Matching momenta: {matching_moms}")
     for jj in range(size_matrix):
-        for kk in range(size_matrix):
+        # for kk in range(size_matrix):
+        ### Loop over the upper triangle (FIXING THE HERMITIAN ISSUE)
+        for kk in range(jj, size_matrix):
             for mm, item in enumerate(matching_moms):
                 for zz in range(irrep_dim):
                     the_file = np.loadtxt(f'{main_location}{name_folder}{item}_{zz+1}/corr_{the_string_name}_{item}_{zz+1}_Ops{jj}_{kk}.dat', skiprows=1, unpack=True)
@@ -109,9 +111,13 @@ for hadron in list_of_xi:
                             counter+=1
                             corr_nt = []
                     corr_all[jj,kk,mm,zz]=np.asarray(correlator)
+                    ### This adds the conjugated part of the matrix
+                    if jj!=kk:
+                        corr_all[kk,jj,mm,zz]=np.conjugate(corr_all[jj,kk,mm,zz])
     correlator_avg = RESHAPING(np.mean(corr_all, axis=(2,3)))
     corr_data = correlator_data.create_group(f"PSQ{da_sqr_mom}_{da_irrep}")
     corr_data.create_dataset('data', data = np.asarray(correlator_avg))
     corr_data.attrs.create('op_list', np.array(hadron.operator, dtype=object))
     corr_data.attrs.create('Other_Info', f'min time slice = {the_nt_min} \n max time slice = {the_nt_max}')
     corr_data.attrs.create('configs', data = the_configs)
+
