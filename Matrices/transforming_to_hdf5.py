@@ -31,7 +31,7 @@ def SQUARED_MOM(the_mom_str):
         for i in range(1,len(the_mod_mom[0])):
             if the_mod_mom[0][i]=='m': the_new_mom+=1
             elif the_mod_mom[0][i]=='d': the_new_mom+=4
-            else: the_new_mom+=int(the_mod_mom[0][i])
+            else: the_new_mom+=(int(the_mod_mom[0][i])**2)
         return [str(the_new_mom),the_mod_mom[1]]
 
 def WRAP_AROUND(the_temp_nt, the_positions, a_counter, the_configs_list, the_fwd_bwd):
